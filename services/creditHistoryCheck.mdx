@@ -3,4 +3,21 @@ title: Credit History Check
 description:
 ---
 
-The Credit History Check service is designed to validate a customer's credit history and confirm their creditworthiness.
+<Warning>This service is only available to users with an **App Key**. You must provide a valid **App Key** in the authorization headers before you can use this service. For more details, please see the [Api Keys page](/apikeys#1-app-key).</Warning>
+
+The Credit History Check service is designed to validate a customer's credit history and confirm their credit worthiness.
+
+### Overview
+
+The checker accepts the following parameters:
+
+- `bvn` — Bank Verification Number
+
+## Quick Summary
+
+1. Firstly, the bvn is hashed using argon2id to ensure that the data is not exposed.
+2. Secondly, the bvn is verified against the cache to check if it has been verified recently.
+3. If the bvn has been verified recently, the process is terminated and a verified response is returned immediately.
+4. If the bvn has not been verified recently, Sapphire Credit will contact an credit validation partner to perform live verification.
+
+## Detailed Verification Flow

@@ -33,7 +33,7 @@
 
 							{
 								"group": "Services",
-								"pages": ["services/liveness", "services/creditHistoryCheck", "essentials/code", "essentials/images", "essentials/settings", "essentials/navigation", "essentials/reusable-snippets"]
+								"pages": ["services/liveness", "services/creditHistoryCheck"]
 							}
 						]
 					},
