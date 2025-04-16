@@ -1,0 +1,161 @@
+---
+title: Common Errors and Codes
+description: Sapphire Credit’s API errors.
+---
+
+While interacting with Sapphire Credit's API, you may encounter various response codes that help you understand the outcome of your requests. These responses follow standard HTTP semantics and are categorized below.
+
+## Success Responses (2xx)
+
+These indicate that the request was successfully received, understood, and processed.
+
+### `200 OK`
+
+```json
+{
+	"statusCode": 200,
+	"statusType": "OK",
+	"message": "Request was successful",
+	"timestamp": "2024-11-10T13:30:00.000Z",
+	"path": "/api/data"
+}
+```
+
+- **Meaning**: Your request was handled correctly and the response contains the requested data.
+
+---
+
+## Client Errors (4xx)
+
+These indicate issues with the client’s request.
+
+### `400 Bad Request`
+
+```json
+{
+	"statusCode": 400,
+	"statusType": "BAD_REQUEST",
+	"message": ["email must be a valid email"],
+	"timestamp": "2024-11-10T12:45:48.772Z",
+	"path": "/auth/signup"
+}
+```
+
+- **Meaning**: The request was invalid. Often caused by malformed parameters or validation failures.
+
+### `401 Unauthorized`
+
+```json
+{
+	"statusCode": 401,
+	"statusType": "UNAUTHORIZED",
+	"message": "Missing or invalid authentication credentials",
+	"timestamp": "2024-11-10T13:00:00.000Z",
+	"path": "/auth/me"
+}
+```
+
+- **Meaning**: Authentication is required and has either failed or not been provided.
+
+### `403 Forbidden`
+
+```json
+{
+	"statusCode": 403,
+	"statusType": "FORBIDDEN",
+	"message": "You do not have permission to access this resource",
+	"timestamp": "2024-11-10T13:02:22.000Z",
+	"path": "/admin/data"
+}
+```
+
+- **Meaning**: You are authenticated but not authorized to access the requested resource.
+
+### `404 Not Found`
+
+```json
+{
+	"statusCode": 404,
+	"statusType": "NOT_FOUND",
+	"message": "Requested resource not found",
+	"timestamp": "2024-11-10T13:05:33.000Z",
+	"path": "/user/invalid-id"
+}
+```
+
+- **Meaning**: The requested resource does not exist or the URL is incorrect.
+
+### `409 Conflict`
+
+```json
+{
+	"statusCode": 409,
+	"statusType": "CONFLICT",
+	"message": "User already exists",
+	"timestamp": "2024-11-10T12:47:26.808Z",
+	"path": "/auth/signup"
+}
+```
+
+- **Meaning**: The request could not be completed due to a conflict with the current state of the resource, such as trying to create a duplicate record.
+
+---
+
+## Server Errors (5xx)
+
+These indicate that the request was valid, but the server failed to fulfill it.
+
+### `500 Internal Server Error`
+
+```json
+{
+	"statusCode": 500,
+	"statusType": "INTERNAL_SERVER_ERROR",
+	"message": "An unexpected error occurred",
+	"timestamp": "2024-11-10T13:10:58.120Z",
+	"path": "/api/data"
+}
+```
+
+- **Meaning**: A generic error occurred on the server. This usually requires internal investigation.
+
+### `502 Bad Gateway`
+
+```json
+{
+	"statusCode": 502,
+	"statusType": "BAD_GATEWAY",
+	"message": "Invalid response from upstream server",
+	"timestamp": "2024-11-10T13:15:30.320Z",
+	"path": "/api/external-service"
+}
+```
+
+- **Meaning**: The API tried to communicate with an upstream service and received an invalid response.
+
+### `503 Service Unavailable`
+
+```json
+{
+	"statusCode": 503,
+	"statusType": "SERVICE_UNAVAILABLE",
+	"message": "Service is temporarily unavailable",
+	"timestamp": "2024-11-10T13:20:00.000Z",
+	"path": "/api/data"
+}
+```
+
+- **Meaning**: The server is currently unable to handle the request due to maintenance or overload.
+
+---
+
+## Error Handling Best Practices
+
+- **4xx Client Errors**: Check your request payloads, authentication tokens, and route parameters.
+- **5xx Server Errors**: These are rare. If you encounter one, retry after a short delay or report it to support.
+- **Use Retry Logic**: For `429`, `502`, and `503` responses, implement exponential backoff retry strategies.
+- **Log Everything**: Always log errors with their `statusCode`, `message`, and `timestamp` for easier debugging.
+
+---
+
+Need help with an error that’s not listed here? Contact [Sapphire Credit Developer Support](https://connect.sapphirecredits.com/support).

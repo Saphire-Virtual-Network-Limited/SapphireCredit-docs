@@ -1,0 +1,88 @@
+---
+title: BVN Liveness Checker
+description: "Guide to Sapphire Credit's BVN verification process"
+---
+
+The BVN Liveness Checker is designed to validate a customer's BVN (Bank Verification Number) and confirm their identity with an additional check against their date of birth (DOB). This process is a core part of Sapphire Credit’s onboarding and compliance flow.
+
+<img
+	className="block "
+	src="/images/liveness.png"
+	alt="BVN Liveness Checker"
+/>
+
+### Overview
+
+The checker accepts the following parameters:
+
+- `bvn` — Bank Verification Number
+- `dob` — Date of Birth
+
+The process follows a multi-step logic to ensure accuracy, performance, and security.
+
+---
+
+## Verification Flow
+
+### Step 1: Instant Record Lookup
+
+If Sapphire Credit already has a recent record of the BVN:
+
+- A verified response is returned immediately.
+- No additional verification is performed.
+- This helps speed up verification for repeat users.
+
+### Step 2: Direct Verification
+
+If the BVN has not been verified recently, Sapphire Credit will contact an identity validation partner to perform live verification.
+
+#### Response Code: `00` – _BVN Found and Valid_
+
+- Sapphire Credit checks if the provided DOB matches the date of birth associated with the BVN.
+  - ✅ **If DOB matches**:
+    - A successful response is returned.
+    - The result is stored securely for future requests.
+  - ❌ **If DOB does not match**:
+    - The process is halted.
+    - Sapphire Credit’s verification, admin, and developer teams are notified.
+    - The mismatch is logged for investigation.
+
+#### Response Code: `01` – _Invalid BVN_
+
+- The BVN is incorrect or does not exist.
+- An alert is sent to Sapphire Credit’s developer and verification teams.
+- The process is terminated without further action.
+
+#### Response Code: `02` – _Service Unavailable_
+
+- Sapphire Credit's verification partner is temporarily down.
+- The developer and admin teams are notified immediately.
+- The system switches to an alternative verification route.
+
+#### Response Code: `03` – _Insufficient Funds for Verification_
+
+- The verification partner is unable to process the request due to low balance.
+- Sapphire Credit’s admin, developer, and finance teams are alerted.
+- An automatic switch to an alternative verification route is triggered.
+
+---
+
+## Alerts and Monitoring
+
+All alerts are routed to the appropriate internal teams with detailed information, including:
+
+- User context
+- Input BVN and DOB
+- Response details
+- Timestamp of the event
+
+---
+
+## Data Handling
+
+- Sensitive identity data is securely stored and managed in accordance with local regulations.
+- Previously verified identities are stored only as long as necessary and refreshed periodically to ensure accuracy.
+
+---
+
+If you have questions about how this process impacts onboarding or integrations, please reach out to the compliance or development support teams.
