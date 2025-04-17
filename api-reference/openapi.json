@@ -1,217 +1,369 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    }
-  }
+	"openapi": "3.0.0",
+	"paths": {
+		"/": {
+			"get": {
+				"operationId": "AppController_runapp",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"summary": "ping server",
+				"tags": ["Server"]
+			}
+		},
+		"/logs": {
+			"get": {
+				"operationId": "AppController_getLogFiles",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"security": [
+					{
+						"Authorization": []
+					}
+				],
+				"summary": "view all log files",
+				"tags": ["Server"]
+			},
+			"delete": {
+				"operationId": "AppController_deleteAllLogFiles",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"security": [
+					{
+						"Authorization": []
+					}
+				],
+				"summary": "delete all logs",
+				"tags": ["Server"]
+			}
+		},
+		"/logs/{filename}": {
+			"get": {
+				"operationId": "AppController_getLogFileContent",
+				"parameters": [
+					{
+						"name": "filename",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"security": [
+					{
+						"Authorization": []
+					}
+				],
+				"summary": "get logs from a specific file",
+				"tags": ["Server"]
+			},
+			"delete": {
+				"operationId": "AppController_deleteLogFile",
+				"parameters": [
+					{
+						"name": "filename",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"security": [
+					{
+						"Authorization": []
+					}
+				],
+				"summary": "delete a specific log file",
+				"tags": ["Server"]
+			}
+		},
+		"/v1/misc/bvn-check": {
+			"post": {
+				"operationId": "MiscController_verifyBvn_v1",
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VerifyBvnDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "BVN and Date of Birth match successfully"
+					},
+					"400": {
+						"description": "Date of Birth does not match or invalid input"
+					},
+					"404": {
+						"description": "BVN not found or verification failed"
+					}
+				},
+				"security": [
+					{
+						"app-key": []
+					}
+				],
+				"summary": "Verify BVN and match withDate of Birth",
+				"tags": ["Misc"]
+			}
+		},
+		"/v1/misc/crc-check": {
+			"post": {
+				"operationId": "MiscController_getCrcData_v1",
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CrcCheckDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "CRC data retrieved successfully"
+					},
+					"400": {
+						"description": "Invalid input or CRC data not found"
+					}
+				},
+				"security": [
+					{
+						"app-key": []
+					}
+				],
+				"summary": "Get CRC data for a BVN",
+				"tags": ["Misc"]
+			}
+		},
+		"/v1/admin/login": {
+			"post": {
+				"operationId": "AdminController_login_v1",
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AdminLoginDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Admin successfully logged in"
+					},
+					"401": {
+						"description": "Unauthorized - Invalid credentials"
+					}
+				},
+				"summary": "Admin login endpoint",
+				"tags": ["Admin"]
+			}
+		},
+		"/v1/admin/profile": {
+			"get": {
+				"operationId": "AdminController_viewProfile_v1",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Admin profile fetched successfully"
+					}
+				},
+				"security": [
+					{
+						"Authorization": []
+					}
+				],
+				"summary": "View Admin Profile",
+				"tags": ["Admin"]
+			}
+		},
+		"/v1/admin/invite": {
+			"post": {
+				"operationId": "AdminController_inviteAdmin_v1",
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/InviteAdminDto"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Admin invited successfully"
+					}
+				},
+				"security": [
+					{
+						"Authorization": []
+					}
+				],
+				"summary": "Invite Admin",
+				"tags": ["Admin"]
+			}
+		},
+		"/v1/admin/logout": {
+			"post": {
+				"operationId": "AdminController_logout_v1",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Logout successful"
+					},
+					"400": {
+						"description": "Logout failed"
+					}
+				},
+				"security": [
+					{
+						"Authorization": []
+					}
+				],
+				"summary": "Logout",
+				"tags": ["Admin"]
+			}
+		}
+	},
+	"info": {
+		"title": "Sapphire Credit API V1",
+		"description": "API Documentation for Sapphire Credit API V1",
+		"version": "1.0.0",
+		"contact": {}
+	},
+	"tags": [
+		{
+			"name": "Server",
+			"description": "Endpoint for Server functions"
+		},
+		{
+			"name": "Admin",
+			"description": "Endpoint for Admin functions"
+		},
+		{
+			"name": "Misc",
+			"description": "Endpoint for Misc functions"
+		}
+	],
+	"servers": [
+		{
+			"url": "https://connect.sapphirecredits.com",
+			"description": "Production environment"
+		}
+	],
+	"components": {
+		"securitySchemes": {
+			"app-key": {
+				"type": "apiKey",
+				"in": "header",
+				"name": "x-app-key"
+			}
+		},
+		"schemas": {
+			"VerifyBvnDto": {
+				"type": "object",
+				"properties": {
+					"bvn": {
+						"type": "string",
+						"description": "BVN to be verified",
+						"example": "12345678901"
+					},
+					"dob": {
+						"type": "string",
+						"description": "Date of Birth to match against BVN",
+						"example": "1990-05-20"
+					}
+				},
+				"required": ["bvn", "dob"]
+			},
+			"CrcCheckDto": {
+				"type": "object",
+				"properties": {
+					"bvn": {
+						"type": "string",
+						"description": "BVN to be verified",
+						"example": "12345678901"
+					}
+				},
+				"required": ["bvn"]
+			},
+			"AdminLoginDto": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"description": "Admin email address",
+						"example": "admin@example.com"
+					},
+					"password": {
+						"type": "string",
+						"description": "Admin password",
+						"example": "password123"
+					}
+				},
+				"required": ["email", "password"]
+			},
+			"InviteAdminDto": {
+				"type": "object",
+				"properties": {
+					"firstName": {
+						"type": "string",
+						"description": "Admin first name",
+						"example": "Greatness"
+					},
+					"lastName": {
+						"type": "string",
+						"description": "Admin last name",
+						"example": "Abolade"
+					},
+					"role": {
+						"type": "string",
+						"description": "Admin role",
+						"example": "ADMIN",
+						"enum": ["USER", "AGENT", "SUPER_ADMIN", "ADMIN", "FINANCE", "STORE_MANAGER", "STORE_BRANCH_MANAGER", "INVENTORY_MANAGER", "VERIFICATION_OFFICER", "DEVELOPER", "SUPPORT"]
+					},
+					"email": {
+						"type": "string",
+						"description": "Admin email address",
+						"example": "admin@example.com"
+					}
+				},
+				"required": ["firstName", "lastName", "role", "email"]
+			}
+		}
+	}
 }
