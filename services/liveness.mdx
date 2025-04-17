@@ -14,14 +14,56 @@ The checker accepts the following parameters:
 - `bvn` — Bank Verification Number
 - `dob` — Date of Birth
 
-The process follows a multi-step logic to ensure accuracy, performance, and security.
+### BVN Input Validation
 
-## Quick Summary
+The **`bvn`** (Bank Verification Number) should be a valid 11-digit number. This number is used for identity verification and must match the following pattern:
 
-1. Firstly, the bvn is hashed using argon2id to ensure that the data is not exposed.
-2. Secondly, the bvn is verified against the cache db to check if it has been verified recently.
-3. If the bvn has been verified recently, the process is terminated and a verified response is returned immediately.
-4. If the bvn has not been verified recently, Sapphire Credit will contact an identity validation partner to perform live verification.
+- **Pattern**: 11 digits (`\d{11}`)
+
+If the BVN does not conform to this pattern, the request will be rejected with an error.
+
+### DOB Input Validation
+
+The **`dob`** (Date of Birth) can be entered in various formats. The system checks the provided `dob` against multiple common date formats to ensure flexibility. The following formats are supported:
+
+- `dd-MM-yyyy`
+- `MM-dd-yyyy`
+- `yyyy-dd-MM`
+- `yyyy-MM-dd`
+- `dd/MM/yyyy`
+- `MM/dd/yyyy`
+- `yyyy/MM/dd`
+- `yyyy.MM.dd`
+- `dd MMM yyyy`
+- `dd-MMM-yyyy`
+
+### Multi-Step Validation Process
+
+1. **Step 1: BVN Validation**
+
+   - The `bvn` is checked for validity using the regular expression for 11 digits.
+   - If the `bvn` is invalid, an error message is returned: `Invalid BVN`.
+
+2. **Step 2: DOB Validation**
+
+   - The `dob` is checked against each of the supported formats.
+   - If the `dob` does not match any of the allowed formats, an error message is returned: `Invalid Date of Birth`.
+
+3. **Step 3: Successful Validation**
+   - If both the `bvn` and `dob` are valid, a success message is returned indicating that the validation was successful.
+
+---
+
+### Example
+
+For a given request:
+
+- **BVN**: `12345678901` (Valid 11-digit number)
+- **DOB**: `25-12-1990` (Valid date in `dd-MM-yyyy` format)
+
+If both parameters pass the validation checks, the response will indicate success.
+
+If either parameter fails validation, an appropriate error message will be returned.
 
 ### Getting started
 
@@ -85,4 +127,19 @@ All alerts are routed to the appropriate internal teams with detailed informatio
 - Response details
 - Timestamp of the event
 
+### Example
+
+<img
+	className="block"
+	src="/images/errorcatch.png"
+	alt="BVN Liveness Checker"
+/>
+
 Appropriate channels are also notified of the event on WhatsApp and Slack for prompt actions.
+
+## Quick Summary
+
+1. Firstly, the bvn is hashed using argon2id to ensure that the data is not exposed.
+2. Secondly, the bvn is verified against the cache db to check if it has been verified recently.
+3. If the bvn has been verified recently, the process is terminated and a verified response is returned immediately.
+4. If the bvn has not been verified recently, Sapphire Credit will contact an identity validation partner to perform live verification.

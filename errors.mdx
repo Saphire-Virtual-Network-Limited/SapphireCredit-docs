@@ -85,6 +85,24 @@ These indicate issues with the client’s request.
 
 - **Meaning**: The requested resource does not exist or the URL is incorrect.
 
+---
+
+### `406 Not Acceptable`
+
+```json
+{
+	"statusCode": 406,
+	"statusType": "NOT_ACCEPTABLE",
+	"message": "The request is not acceptable",
+	"timestamp": "2024-11-10T13:05:33.000Z",
+	"path": "/user/invalid-id"
+}
+```
+
+- **Meaning**: The request is not acceptable.
+
+---
+
 ### `409 Conflict`
 
 ```json
