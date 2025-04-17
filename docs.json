@@ -39,14 +39,11 @@
 					},
 					{
 						"tab": "API Reference",
+						"openapi": "https://connect.sapphirecredits.com/v1/swagger-json",
 						"groups": [
 							{
 								"group": "API Documentation",
 								"pages": ["api-reference/introduction"]
-							},
-							{
-								"group": "Endpoint Examples",
-								"pages": ["api-reference/endpoint/get", "api-reference/endpoint/create", "api-reference/endpoint/delete", "api-reference/endpoint/webhook"]
 							}
 						]
 					}
@@ -54,10 +51,20 @@
 			}
 		]
 	},
+	"api": {
+		"mdx": {
+			"server": "https://connect.sapphirecredits.com/v1"
+		},
+		"playground": {
+			"display": "interactive"
+		}
+	},
+
 	"logo": {
 		"light": "/images/logo/light.png",
 		"dark": "/images/logo/dark.png"
 	},
+
 	"navbar": {
 		"links": [
 			{
