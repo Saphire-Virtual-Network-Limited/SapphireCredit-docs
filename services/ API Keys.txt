@@ -90,7 +90,6 @@ All API endpoints are authenticated using Bearer tokens and picked up from the s
 ]
 ```
 
-
 "api": {
 		"mdx": {
 			"server": "https://connect.sapphirecredits.com/v1",
