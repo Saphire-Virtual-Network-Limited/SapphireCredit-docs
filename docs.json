@@ -39,32 +39,17 @@
 					},
 					{
 						"tab": "API Reference",
+						"openapi": "https://connect.sapphirecredits.com/v1/swagger-json",
 						"groups": [
 							{
 								"group": "API Documentation",
 								"pages": ["api-reference/introduction"]
-							},
-							{
-								"group": "Services APIs",
-								"pages": ["api-reference/endpoint/bvn-check", "api-reference/endpoint/credit-check"]
 							}
 						]
 					}
 				]
 			}
 		]
-	},
-	"api": {
-		"mdx": {
-			"server": "https://connect.sapphirecredits.com/v1",
-			"auth": {
-				"method": "key",
-				"name": "x-app-key"
-			}
-		},
-		"playground": {
-			"display": "interactive"
-		}
 	},
 
 	"logo": {
